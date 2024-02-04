@@ -3,6 +3,7 @@ import { Web3ModalScaffold } from '@web3modal/scaffold';
 import { ConstantsUtil, PresetsUtil, HelpersUtil } from '@web3modal/scaffold-utils';
 import { getCaipDefaultChain } from './utils/helpers.js';
 import { WALLET_CHOICE_KEY } from './utils/constants.js';
+import { generateAvatarURL } from '@cfx-kit/wallet-avatar';
 export class Web3Modal extends Web3ModalScaffold {
     constructor(options) {
         const { wagmiConfig, siweConfig, chains, defaultChain, tokens, _sdkVersion, ...w3mOptions } = options;
@@ -190,29 +191,9 @@ export class Web3Modal extends Web3ModalScaffold {
         }
     }
     async syncProfile(address, chain) {
-        if (chain.id !== mainnet.id) {
             this.setProfileName(null);
-            this.setProfileImage(null);
+            this.setProfileImage(generateAvatarURL(address));
             return;
-        }
-        try {
-            const { name, avatar } = await this.fetchIdentity({
-                caipChainId: `${ConstantsUtil.EIP155}:${chain.id}`,
-                address
-            });
-            this.setProfileName(name);
-            this.setProfileImage(avatar);
-        }
-        catch {
-            const profileName = await fetchEnsName({ address, chainId: chain.id });
-            if (profileName) {
-                this.setProfileName(profileName);
-                const profileImage = await fetchEnsAvatar({ name: profileName, chainId: chain.id });
-                if (profileImage) {
-                    this.setProfileImage(profileImage);
-                }
-            }
-        }
     }
     async syncBalance(address, chain) {
         const balance = await fetchBalance({

@@ -43,6 +43,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@cfx-kit/wallet-avatar": "^0.0.5",
     "@web3modal/polyfills": "3.5.7",
     "@web3modal/scaffold": "3.5.7",
     "@web3modal/scaffold-react": "3.5.7",
